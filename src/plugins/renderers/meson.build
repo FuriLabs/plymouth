@@ -1,4 +1,5 @@
 subdir('frame-buffer')
+subdir('minui')
 
 if libdrm_dep.found()
   subdir('drm')
