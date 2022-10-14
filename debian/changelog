@@ -5,6 +5,7 @@ plymouth (22.02.122-3) UNRELEASED; urgency=medium
       default.
   * Set upstream metadata fields: Repository-Browse.
   * Update standards version to 4.6.1, no changes needed.
+  * Avoid explicitly specifying -Wl,--as-needed linker flag.
 
  -- Debian Janitor <janitor@jelmer.uk>  Fri, 14 Oct 2022 17:59:20 -0000
 
