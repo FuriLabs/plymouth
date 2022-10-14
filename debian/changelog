@@ -3,6 +3,7 @@ plymouth (22.02.122-3) UNRELEASED; urgency=medium
   * Bump debhelper from old 12 to 13.
     + debian/rules: Drop --fail-missing argument to dh_missing, which is now the
       default.
+  * Set upstream metadata fields: Repository-Browse.
 
  -- Debian Janitor <janitor@jelmer.uk>  Fri, 14 Oct 2022 17:59:20 -0000
 
