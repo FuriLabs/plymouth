@@ -10,8 +10,9 @@ plymouth (22.02.122-4) UNRELEASED; urgency=medium
     building the initramfs (Closes: #1050545)
   * Update initramfs for all kernel versions when installing or removing
     plymouth (Closes: #916792)
+  * debian/control: Drop lsb-base, to please lintian
 
- -- Laurent Bigonville <bigon@debian.org>  Sun, 10 Dec 2023 11:32:51 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Sun, 10 Dec 2023 11:38:32 +0100
 
 plymouth (22.02.122-3) unstable; urgency=medium
 
