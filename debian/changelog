@@ -1,7 +1,8 @@
-plymouth (22.02.122-4) UNRELEASED; urgency=medium
+plymouth (22.02.122-4) unstable; urgency=medium
 
   [ Helmut Grohne ]
-  * Fix FTBFS when systemdsystemunitdir changes in systemd.pc. (Closes: #1052310)
+  * Fix FTBFS when systemdsystemunitdir changes in systemd.pc. (Closes:
+    #1052310)
 
   [ Laurent Bigonville ]
   * debian/control: Add elogind as an alternative to systemd as elogind
@@ -14,7 +15,7 @@ plymouth (22.02.122-4) UNRELEASED; urgency=medium
   * debian/plymouth.links: Fix .service symlink path after move to /usr
   * debian/rules: Move LSB init-functions file to /usr
 
- -- Laurent Bigonville <bigon@debian.org>  Sun, 10 Dec 2023 11:59:28 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Sun, 10 Dec 2023 12:00:10 +0100
 
 plymouth (22.02.122-3) unstable; urgency=medium
 
