@@ -1,3 +1,9 @@
+plymouth (22.02.122-4) UNRELEASED; urgency=medium
+
+  * Fix FTBFS when systemdsystemunitdir changes in systemd.pc. (Closes: #1052310)
+
+ -- Helmut Grohne <helmut@subdivi.de>  Wed, 20 Sep 2023 11:08:04 +0200
+
 plymouth (22.02.122-3) unstable; urgency=medium
 
   [ Debian Janitor ]

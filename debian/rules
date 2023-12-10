@@ -6,6 +6,8 @@ DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 # symbols, and speed up loading.
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,-z,defs -Wl,-O1
 
+export systemdsystemunitdir=$(shell pkg-config --variable=systemdsystemunitdir systemd | sed s,^/,,)
+
 %:
 	dh ${@}
 
