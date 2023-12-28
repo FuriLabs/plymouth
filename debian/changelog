@@ -1,8 +1,9 @@
-plymouth (22.02.122-5) UNRELEASED; urgency=medium
+plymouth (23.360.11-1) UNRELEASED; urgency=medium
 
+  * New upstream release (Closes: #1059364)
   * debian/gbp.conf: Set upstream-vcs-tag
 
- -- Laurent Bigonville <bigon@debian.org>  Thu, 28 Dec 2023 19:00:21 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Thu, 28 Dec 2023 19:01:32 +0100
 
 plymouth (22.02.122-4) unstable; urgency=medium
 
