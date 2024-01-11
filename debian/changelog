@@ -1,4 +1,4 @@
-plymouth (24.004.60-1) UNRELEASED; urgency=medium
+plymouth (24.004.60-1) unstable; urgency=medium
 
   * New upstream release (Closes: #1059364)
   * debian/gbp.conf: Set upstream-vcs-tag
@@ -13,8 +13,9 @@ plymouth (24.004.60-1) UNRELEASED; urgency=medium
     target doesn't exist
   * debian/libplymouth5.symbols: Add newly exported symbols
   * debian/local/plymouth.hook: Continue to use the pango label module for now
+  * debian/patches/fallback-etc-default-keyboard.patch: Refreshed
 
- -- Laurent Bigonville <bigon@debian.org>  Thu, 11 Jan 2024 20:58:00 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Thu, 11 Jan 2024 21:17:19 +0100
 
 plymouth (22.02.122-4) unstable; urgency=medium
 
