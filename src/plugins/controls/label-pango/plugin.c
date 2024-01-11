@@ -42,6 +42,7 @@
 #include <cairo.h>
 #include <pango/pangocairo.h>
 
+#include "ply-logger.h"
 #include "ply-terminal.h"
 #include "ply-pixel-buffer.h"
 #include "ply-pixel-display.h"
@@ -181,43 +182,26 @@ remove_hexboxes_from_pango_layout (PangoLayout *pango_layout)
 {
         PangoLayoutIter *iter;
         bool hexbox_removed = false;
-        ply_buffer_t *buffer = ply_buffer_new ();
-        const char *old_string = pango_layout_get_text (pango_layout);
 
         iter = pango_layout_get_iter (pango_layout);
-
         do {
                 PangoLayoutRun *run;
-                PangoGlyphItem *glyph_items;
-                PangoGlyphString *glyph_string;
 
-                run = pango_layout_iter_get_run_readonly (iter);
+                run = pango_layout_iter_get_run (iter);
                 if (!run)
                         continue;
 
-                glyph_items = (PangoGlyphItem *) run;
-                glyph_string = glyph_items->glyphs;
-
-                if (glyph_string->num_glyphs == 0)
-                        continue;
-
-                for (size_t i = 0; i < glyph_string->num_glyphs; i++) {
-                        if (glyph_string->glyphs[i].glyph & PANGO_GLYPH_UNKNOWN_FLAG) {
+                for (size_t i = 0; i < run->glyphs->num_glyphs; i++) {
+                        if (run->glyphs->glyphs[i].glyph & PANGO_GLYPH_UNKNOWN_FLAG) {
+                                run->glyphs->glyphs[i].glyph = PANGO_GLYPH_INVALID_INPUT;
                                 hexbox_removed = true;
-                                ply_buffer_append (buffer, "%c", '?');
-                        } else {
-                                ply_buffer_append_bytes (buffer, old_string + glyph_items->item->offset, glyph_items->item->length);
                         }
                 }
         } while (pango_layout_iter_next_run (iter));
         pango_layout_iter_free (iter);
 
-        if (hexbox_removed) {
-                const char *new_string = ply_buffer_get_bytes (buffer);
-                pango_layout_set_text (pango_layout, new_string, -1);
-        }
-
-        ply_buffer_free (buffer);
+        if (hexbox_removed)
+                pango_layout_context_changed (pango_layout);
 }
 
 void
@@ -316,10 +300,10 @@ size_control (ply_label_plugin_control_t *label,
 {
         cairo_t *cairo_context;
         PangoLayout *pango_layout;
-        int text_width;
-        int text_height;
+        int text_width = 0;
+        int text_height = 0;
 
-        if (force && !label->needs_size_update)
+        if (!force && !label->needs_size_update)
                 return; /* Size already is up to date */
 
         if (!force && label->is_hidden) {
@@ -330,10 +314,18 @@ size_control (ply_label_plugin_control_t *label,
         cairo_context = get_cairo_context_for_sizing (label);
 
         pango_layout = init_pango_text_layout (cairo_context, label->text, label->font, label->alignment, label->attribute_list, label->width);
+        pango_layout_get_pixel_size (pango_layout, &text_width, &text_height);
 
-        pango_layout_get_size (pango_layout, &text_width, &text_height);
-        label->area.width = (long) ((double) text_width / PANGO_SCALE);
-        label->area.height = (long) ((double) text_height / PANGO_SCALE);
+        if (label->width < 0) {
+                g_object_unref (pango_layout);
+                pango_layout = init_pango_text_layout (cairo_context, label->text, label->font, label->alignment, label->attribute_list, text_width);
+                pango_layout_get_pixel_size (pango_layout, &text_width, &text_height);
+        }
+
+        ply_trace ("Text '%s' has dimensions %dx%d", label->text, text_width, text_height);
+
+        label->area.width = text_width;
+        label->area.height = text_height;
 
         g_object_unref (pango_layout);
         cairo_destroy (cairo_context);

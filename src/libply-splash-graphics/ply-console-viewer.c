@@ -21,6 +21,7 @@
 #include <assert.h>
 
 #include "ply-label.h"
+#include "ply-logger.h"
 #include "ply-array.h"
 #include "ply-pixel-display.h"
 #include "ply-image.h"
@@ -56,9 +57,39 @@ struct _ply_console_viewer
 static void update_console_messages (ply_console_viewer_t *console_viewer);
 static void on_terminal_emulator_output (ply_console_viewer_t *console_viewer);
 
-bool ply_console_viewer_preferred (void)
+bool
+ply_console_viewer_preferred (void)
 {
-        return !ply_kernel_command_line_has_argument ("plymouth.prefer-fbcon");
+        static enum { PLY_CONSOLE_VIEWER_PREFERENCE_UNKNOWN = -1,
+                      PLY_CONSOLE_VIEWER_PREFERENCE_NO_VIEWER,
+                      PLY_CONSOLE_VIEWER_PREFERENCE_VIEWER } preference = PLY_CONSOLE_VIEWER_PREFERENCE_UNKNOWN;
+        ply_label_t *label = NULL;
+
+        if (preference != PLY_CONSOLE_VIEWER_PREFERENCE_UNKNOWN)
+                goto out;
+
+        if (ply_kernel_command_line_has_argument ("plymouth.prefer-fbcon")) {
+                ply_trace ("Not using console viewer because plymouth.prefer-fbcon is on kernel command line");
+                preference = PLY_CONSOLE_VIEWER_PREFERENCE_NO_VIEWER;
+                goto out;
+        }
+
+        label = ply_label_new ();
+        ply_label_set_text (label, " ");
+
+        if (ply_label_get_width (label) <= 1 || ply_label_get_height (label) <= 1) {
+                ply_trace ("Not using console viewer because text renderering isn't working");
+                preference = PLY_CONSOLE_VIEWER_PREFERENCE_NO_VIEWER;
+                goto out;
+        } else {
+                ply_trace ("Using console viewer instead of kernel framebuffer console");
+                preference = PLY_CONSOLE_VIEWER_PREFERENCE_VIEWER;
+                goto out;
+        }
+
+out:
+        ply_label_free (label);
+        return (bool) preference;
 }
 
 ply_console_viewer_t *
@@ -89,7 +120,7 @@ ply_console_viewer_new (ply_pixel_display_t *display,
         line_count = ply_pixel_display_get_height (display) / console_viewer->font_height;
 
         /* Display at least one line */
-        if (line_count < 0)
+        if (line_count == 0)
                 line_count = 1;
 
         ply_label_free (measure_label);
@@ -115,6 +146,9 @@ ply_console_viewer_free (ply_console_viewer_t *console_viewer)
 {
         ply_list_node_t *node;
         ply_label_t *console_message_label;
+
+        if (console_viewer == NULL)
+                return;
 
         ply_list_foreach (console_viewer->message_labels, node) {
                 console_message_label = ply_list_node_get_data (node);
