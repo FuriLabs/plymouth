@@ -1,4 +1,4 @@
-plymouth (23.360.11-1) UNRELEASED; urgency=medium
+plymouth (24.004.60-1) UNRELEASED; urgency=medium
 
   * New upstream release (Closes: #1059364)
   * debian/gbp.conf: Set upstream-vcs-tag
@@ -14,7 +14,7 @@ plymouth (23.360.11-1) UNRELEASED; urgency=medium
   * debian/libplymouth5.symbols: Add newly exported symbols
   * debian/local/plymouth.hook: Continue to use the pango label module for now
 
- -- Laurent Bigonville <bigon@debian.org>  Thu, 11 Jan 2024 20:56:43 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Thu, 11 Jan 2024 20:58:00 +0100
 
 plymouth (22.02.122-4) unstable; urgency=medium
 
