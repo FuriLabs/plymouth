@@ -2,8 +2,19 @@ plymouth (23.360.11-1) UNRELEASED; urgency=medium
 
   * New upstream release (Closes: #1059364)
   * debian/gbp.conf: Set upstream-vcs-tag
+  * d/p/configure.ac-Avoid-embedding-the-date-in-the-version.patch: Dropped,
+    autotools are gone
+  * Add meson support
+  * debian/control: Add new build-dependencies
+  * debian/plymouth-label.install: Install split label plugins
+  * debian/plymouth.docs: Fix documentation file names
+  * debian/control: Mark udev as linux-any
+  * debian/rules: Workaround a but in meson, it cannot create a symlink if the
+    target doesn't exist
+  * debian/libplymouth5.symbols: Add newly exported symbols
+  * debian/local/plymouth.hook: Continue to use the pango label module for now
 
- -- Laurent Bigonville <bigon@debian.org>  Thu, 28 Dec 2023 19:01:32 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Thu, 11 Jan 2024 20:56:43 +0100
 
 plymouth (22.02.122-4) unstable; urgency=medium
 
