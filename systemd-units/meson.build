@@ -9,6 +9,7 @@ systemd_unit_templates = [
   'plymouth-kexec.service.in',
   'plymouth-poweroff.service.in',
   'plymouth-halt.service.in',
+  'plymouth-determine-scale.service.in',
   'systemd-ask-password-plymouth.path.in',
   'systemd-ask-password-plymouth.service.in',
 ]
@@ -56,6 +57,10 @@ systemd_target_links = [
   {
     'target': 'halt.target.wants',
     'services': [ 'plymouth-halt', 'plymouth-switch-root-initramfs' ],
+  },
+  {
+    'target': 'sysinit.target.wants',
+    'services': [ 'plymouth-determine-scale', 'plymouth-read-write' ],
   },
 ]
 
