@@ -15,6 +15,7 @@ override_dh_auto_configure:
 		--disable-silent-rules \
 		--prefix=/usr \
 		--localstatedir=/var \
+		--with-systemdunitdir=/usr/lib/systemd/system \
 		--with-runtimedir=/run \
 		--enable-pango \
 		--enable-systemd-integration \
